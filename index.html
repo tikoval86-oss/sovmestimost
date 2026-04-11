@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гороскоп совместимости — узнай правду о отношениях</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark-blue: #2B3A4B;
+            --beige: #F5EDE4;
+            --gold-on-beige: #B08A4A;
+            --gold-on-blue: #C8A96B;
+            --text-on-blue: #F5EDE4;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Playfair Display', Georgia, serif;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2332 100%);
+            color: var(--text-on-blue);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(200, 169, 107, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(200, 169, 107, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* === HEADER === */
+        header {
+            padding: 40px 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(200, 169, 107, 0.3);
+            margin-bottom: 80px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold-on-blue), var(--text-on-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            color: rgba(245, 237, 228, 0.8);
+            font-family: 'Lora', Georgia, serif;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        /* === HERO SECTION === */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 120px;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .hero-text h2 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            color: var(--text-on-blue);
+        }
+
+        .hero-text p {
+            font-size: 1.15rem;
+            color: rgba(245, 237, 228, 0.85);
+            margin-bottom: 20px;
+            font-family: 'Lora', Georgia, serif;
+            font-weight: 300;
+        }
+
+        .hero-concerns {
+            list-style: none;
+            margin: 30px 0;
+        }
+
+        .hero-concerns li {
+            font-size: 1.1rem;
+            margin: 15px 0;
+            padding-left: 35px;
+            position: relative;
+            color: rgba(245, 237, 228, 0.9);
+            font-family: 'Lora', Georgia, serif;
+        }
+
+        .hero-concerns li::before {
+            content: '♡';
+            position: absolute;
+            left: 0;
+            color: var(--gold-on-blue);
+            font-size: 1.3rem;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(200, 169, 107, 0.15) 0%, rgba(200, 169, 107, 0.05) 100%);
+            border-radius: 20px;
+            border: 2px solid rgba(200, 169, 107, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            animation: scaleIn 1s ease-out 0.5s both;
+        }
+
+        .hero-visual::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(200, 169, 107, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .hero-visual-text {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--gold-on-blue);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* === WARNING SECTION === */
+        .warning-section {
+            margin-bottom: 120px;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(200, 169, 107, 0.12) 0%, rgba(200, 169, 107, 0.03) 100%);
+            border: 2px solid var(--gold-on-blue);
+            border-radius: 15px;
+            padding: 40px;
+            position: relative;
+        }
+
+        .warning-title {
+            font-size: 1.8rem;
+            color: var(--gold-on-blue);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .warning-text {
+            font-size: 1.15rem;
+            color: rgba(245, 237, 228, 0.9);
+            margin-bottom: 25px;
+            font-family: 'Lora', Georgia, serif;
+            line-height: 1.8;
+        }
+
+        .warning-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .warning-list li {
+            font-size: 1.05rem;
+            margin: 15px 0;
+            padding-left: 35px;
+            position: relative;
+            color: rgba(245, 237, 228, 0.85);
+            font-family: 'Lora', Georgia, serif;
+        }
+
+        .warning-list li::before {
+            content: '🛡️';
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        /* === BENEFITS SECTION === */
+        .benefits {
+            margin-bottom: 120px;
+            animation: fadeIn 1s ease-out 0.7s both;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--text-on-blue);
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-on-blue), transparent);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, rgba(200, 169, 107, 0.08) 0%, rgba(200, 169, 107, 0.02) 100%);
+            border: 1px solid rgba(200, 169, 107, 0.2);
+            border-radius: 15px;
+            padding: 40px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold-on-blue), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .benefit-card:hover {
+            background: linear-gradient(135deg, rgba(200, 169, 107, 0.15) 0%, rgba(200, 169, 107, 0.05) 100%);
+            border-color: rgba(200, 169, 107, 0.4);
+            transform: translateY(-8px);
+        }
+
+        .benefit-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--gold-on-blue);
+        }
+
+        .benefit-card p {
+            font-size: 1rem;
+            color: rgba(245, 237, 228, 0.8);
+            font-family: 'Lora', Georgia, serif;
+            font-weight: 300;
+        }
+
+        /* === PROCESS SECTION === */
+        .process {
+            margin-bottom: 120px;
+            animation: fadeIn 1s ease-out 0.9s both;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .step {
+            position: relative;
+            padding: 30px;
+            background: rgba(200, 169, 107, 0.05);
+            border-left: 4px solid var(--gold-on-blue);
+            border-radius: 8px;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: var(--gold-on-blue);
+            color: var(--dark-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-on-blue);
+        }
+
+        .step p {
+            font-size: 1rem;
+            color: rgba(245, 237, 228, 0.8);
+            font-family: 'Lora', Georgia, serif;
+            font-weight: 300;
+        }
+
+        /* === CTA SECTION === */
+        .cta-section {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, rgba(200, 169, 107, 0.1) 0%, rgba(200, 169, 107, 0.02) 100%);
+            border: 2px solid rgba(200, 169, 107, 0.3);
+            border-radius: 20px;
+            margin-bottom: 80px;
+            animation: fadeIn 1s ease-out 1.1s both;
+        }
+
+        .cta-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: var(--text-on-blue);
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            color: rgba(245, 237, 228, 0.85);
+            margin-bottom: 30px;
+            font-family: 'Lora', Georgia, serif;
+            font-weight: 300;
+        }
+
+        .cta-price {
+            display: inline-block;
+            font-size: 2.5rem;
+            color: var(--gold-on-blue);
+            font-weight: 700;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: var(--text-on-blue);
+            font-family: 'Lora', Georgia, serif;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(245, 237, 228, 0.1);
+            border: 1px solid rgba(200, 169, 107, 0.3);
+            border-radius: 8px;
+            color: var(--text-on-blue);
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: rgba(245, 237, 228, 0.15);
+            border-color: var(--gold-on-blue);
+            box-shadow: 0 0 0 3px rgba(200, 169, 107, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(245, 237, 228, 0.5);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, var(--gold-on-blue), #d4a85c);
+            color: var(--dark-blue);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 30px rgba(200, 169, 107, 0.2);
+            text-transform: uppercase;
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(200, 169, 107, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(200, 169, 107, 0.2);
+            border: 1px solid var(--gold-on-blue);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: var(--gold-on-blue);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* === FOOTER === */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(200, 169, 107, 0.3);
+            color: rgba(245, 237, 228, 0.7);
+            font-family: 'Lora', Georgia, serif;
+            font-size: 0.95rem;
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.15;
+            }
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                margin-bottom: 60px;
+            }
+
+            .hero-text h2 {
+                font-size: 2rem;
+            }
+
+            .hero-visual {
+                height: 300px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 40px;
+            }
+
+            .cta-section {
+                padding: 40px 25px;
+            }
+
+            .cta-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .cta-price {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Гороскоп совместимости</h1>
+        <p>Узнай, совместимы ли вы на самом деле</p>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-text">
+                <h2>Сомневаешься в отношениях? Думаешь о будущем вместе?</h2>
+                <p>Влюбилась, но кажется, что-то не то? Чувствуешь, что он подходит, но не уверена? Хочешь понять: есть ли у вас будущее?</p>
+                
+                <ul class="hero-concerns">
+                    <li>Страх, что он не тот, кто мне нужен</li>
+                    <li>Сомнения: будет ли он верен и надёжен</li>
+                    <li>Хочу понять, будет ли он хороший партнёр</li>
+                    <li>Нужна объективная оценка отношений</li>
+                </ul>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hero-visual-text">💕 Узнай правду</div>
+            </div>
+        </section>
+
+        <section class="warning-section">
+            <div class="warning-box">
+                <h3 class="warning-title">⚠️ 150€ — это дешевле одного месяца с неправильным человеком</h3>
+                
+                <p class="warning-text">Часто мы вкладываем в отношения деньги, время, энергию, эмоции — а потом понимаем: он абьюзер, мошенник, альфач, просто больной на голову. Когда уже потеряли всё.</p>
+
+                <p class="warning-text"><strong>Эта консультация убережёт тебя от:</strong></p>
+
+                <ul class="warning-list">
+                    <li>Отношений с абьюзерами и манипуляторами</li>
+                    <li>Мошенников, которые только ловят деньги</li>
+                    <li>Нарциссов и токсичных людей</li>
+                    <li>Миллионов рублей впустую потраченных</li>
+                    <li>Годов потраченных на неправильного человека</li>
+                    <li>Нервов, слёз и разочарований</li>
+                </ul>
+
+                <p class="warning-text" style="margin-top: 25px; font-weight: 600; color: var(--gold-on-blue);">Узнаешь правду ДО того, как вложишь всё. 🛡️</p>
+            </div>
+        </section>
+
+        <section class="benefits">
+            <h2 class="section-title">Как это работает</h2>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔮</div>
+                    <h3>Анализ совместимости</h3>
+                    <p>Смотрю вашу совместимость на уровне планет. Вижу, где вы идеально дополняете друг друга, а где могут быть конфликты и опасности.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">❤️</div>
+                    <h3>Эмоциональная связь</h3>
+                    <p>Анализирую вашу способность понимать друг друга, сопереживать, быть рядом. Смотрю сексуальную совместимость и страсть.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Финансовая гармония</h3>
+                    <p>Разбираемся, как вы будете взаимодействовать с деньгами и материальным достатком. Видно, если он мошенник или живёт за твой счёт.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Жизненные цели</h3>
+                    <p>Вижу, совпадают ли ваши интересы, мечты, ценности и направления развития. Есть ли у вас общее будущее.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">🌟</div>
+                    <h3>Надёжность и верность</h3>
+                    <p>Честный анализ: как долго продлятся отношения, есть ли риски, на что обратить внимание. Вижу скрытую агрессию, манипуляции, неверность.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">💎</div>
+                    <h3>Потенциал и советы</h3>
+                    <p>Чёткие рекомендации: стоит ли развивать отношения, что нужно изменить, как сделать их крепче или безопасно выйти.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="process">
+            <h2 class="section-title">Как проходит консультация</h2>
+            
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Полная информация</h3>
+                    <p>Ты даёшь мне ваши данные: дата, время, место рождения — обоих партнёров. Это основа для анализа.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Глубокий анализ</h3>
+                    <p>Я строю ваши карты и смотрю все аспекты совместимости через Ведическую астрологию. Вижу его истинную природу.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Честный разговор</h3>
+                    <p>Рассказываю то, что вижу: как вы подходите, где конфликты, что работает. Тепло, но честно. Никакой красивой лжи.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Рекомендации</h3>
+                    <p>Чёткие советы: как развивать отношения, на какие моменты обратить внимание или как безопасно уйти.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>Результат</h2>
+            <p>Ты узнаёшь правду о ваших отношениях. Приходит спокойствие и ясность. Берегишь своё время, деньги и душу.</p>
+            
+            <div class="cta-price">150 €</div>
+
+            <div class="success-message" id="successMessage">
+                ✓ Заявка отправлена! Я свяжусь с тобой в Телеграме в ближайшее время
+            </div>
+            
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="name">Твоё имя</label>
+                    <input type="text" id="name" name="name" placeholder="Как тебя зовут?" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email или Телеграм</label>
+                    <input type="text" id="email" name="email" placeholder="@username или email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Кратко о себе (опционально)</label>
+                    <textarea id="message" name="message" placeholder="Например: сомневаюсь в отношениях и..."></textarea>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">Заказать консультацию</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© Ведическая астропсихология с Таней • Личные консультации со всего мира</p>
+    </footer>
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const submitBtn = document.getElementById('submitBtn');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Отправляю...';
+
+            const telegramMessage = `
+📌 Новая заявка на консультацию "Гороскоп совместимости" (150€)
+
+👤 Имя: ${name}
+📧 Контакт: ${email}
+💬 Сообщение: ${message || 'Не указано'}
+
+Цена: 150€
+            `.trim();
+
+            try {
+                const botToken = '6773699391:AAFghgDY-987vBuCnRhl_6LtrhI733GgT28';
+                const chatId = '@astrolog_prognozi';
+                
+                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: telegramMessage,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById('bookingForm').reset();
+                    document.getElementById('successMessage').classList.add('show');
+                    
+                    setTimeout(() => {
+                        document.getElementById('successMessage').classList.remove('show');
+                    }, 5000);
+                } else {
+                    alert('Ошибка при отправке. Попробуй ещё раз.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ошибка при отправке. Убедись, что у тебя есть соединение с интернетом.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Заказать консультацию';
+            }
+        });
+    </script>
+</body>
+</html>
